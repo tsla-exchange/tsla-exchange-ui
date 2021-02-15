@@ -1,29 +1,27 @@
 <template>
-  <body>
-    <div class="container">
-      <div class="space" />
-      <div class="car-red" />
+  <div class="container">
+    <div class="space" />
+    <div class="car-red" />
 
-      <span class="title">Get to the Moon
-        with your sTSLA
-      </span>
+    <span class="title">Get to the Moon
+      with your sTSLA
+    </span>
 
-      <div class="button" />
+    <div class="button" />
 
-      <span class="button-text">Get sTSLA</span>
+    <span class="button-text">Get sTSLA</span>
 
-      <span class="paragraph">Synthetix is the backbone for derivatives
-        trading in DeFi, allowing anyone, anywhere
-        to gain on-chain exposure to a vast range
-        of assets.
-      </span>
+    <span class="paragraph">Synthetix is the backbone for derivatives
+      trading in DeFi, allowing anyone, anywhere
+      to gain on-chain exposure to a vast range
+      of assets.
+    </span>
 
-      <div class="car-gray" />
-      <div class="github-icon" />
-      <div class="twitter-icon" />
-      <div class="network-icon" />
-    </div>
-  </body>
+    <div class="car-gray" />
+    <div class="github-icon" />
+    <div class="twitter-icon" />
+    <div class="network-icon" />
+  </div>
 </template>
 
 <style>
