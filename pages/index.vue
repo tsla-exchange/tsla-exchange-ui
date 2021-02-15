@@ -7,7 +7,10 @@
       with your sTSLA
     </span>
 
-    <div class="button" />
+    <div
+      class="button"
+      @click="$router.push({ path: '/modal' })"
+    />
 
     <span class="button-text">Get sTSLA</span>
 
@@ -92,6 +95,7 @@
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
   overflow: hidden;
+  cursor: pointer;
 }
 .button-text {
   width: 125px;
@@ -104,6 +108,7 @@
   font-size: 20px;
   opacity: 1;
   text-align: left;
+  pointer-events: none;
 }
 .paragraph {
   width: 519px;

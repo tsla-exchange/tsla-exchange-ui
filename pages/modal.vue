@@ -5,7 +5,10 @@
     <div class="car-red" />
     <div class="car-gray" />
 
-    <div class="shade" />
+    <div
+      class="shade"
+      @click="$router.push({ path: '/' })"
+    />
     <div class="address" />
     <span class="address-text">0xdeaDDeADDEaDdeadd</span>
 
