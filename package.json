@@ -1,0 +1,12 @@
+{
+  "name": "tsla-exchange-ui",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^7.20.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-vue": "^7.6.0",
+    "nuxt": "^2.15.0"
+  }
+}
