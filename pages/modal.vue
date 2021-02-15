@@ -56,7 +56,7 @@
 .space {
   width: 100%;
   height: 100%;
-  background: url("../public/space.png");
+  background: url("../static/space.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -69,7 +69,7 @@
 .car-red {
   width: 318px;
   height: 155px;
-  background: url("../public/car-red.png");
+  background: url("../static/car-red.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -83,7 +83,7 @@
 .car-gray {
   width: 523px;
   height: 297px;
-  background: url("../public/car-gray.png");
+  background: url("../static/car-gray.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -158,7 +158,7 @@
 .fox {
   width: 84px;
   height: 92px;
-  background: url("../public/fox.png");
+  background: url("../static/fox.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -339,7 +339,7 @@
 .stsla-icon {
   width: 38px;
   height: 38px;
-  background: url("../public/stsla-icon.png");
+  background: url("../static/stsla-icon.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -352,7 +352,7 @@
 .usdc-icon {
   width: 38px;
   height: 38px;
-  background: url("../public/usdc-icon.png");
+  background: url("../static/usdc-icon.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
