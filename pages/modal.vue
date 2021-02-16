@@ -32,7 +32,7 @@
       >
 
       <span
-        class="balance"
+        class="balance-usdc"
         @click="setMaxInput()"
       >
         Balance: {{ formatUSDC(balanceUSDC) }}
@@ -47,8 +47,17 @@
         <span class="output-text">{{ formatSTSLA(outputAmount) }}</span>
       </div>
 
-      <div class="swap-button" />
-      <span class="swap-button-text">Swap</span>
+      <span class="balance-stsla">
+        Balance: {{ formatSTSLA(balanceSTSLA) }}
+      </span>
+
+      <div
+        class="swap-button"
+        @click="clickButton()"
+      />
+      <span class="swap-button-text">
+        {{ buttonText }}
+      </span>
     </div>
   </div>
 </template>
@@ -61,7 +70,6 @@ import detectEthereumProvider from '@metamask/detect-provider';
 // TODO: real address
 const TSLA_EXCHANGE = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 
-const UNISWAP_ROUTER = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
 const DELEGATE_APPROVALS = '0x15fd6e554874B9e70F832Ed37f231Ac5E142362f';
 const SWAPS = '0xD1602F68CC7C4c7B59D686243EA35a9C73B0c6a2';
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
@@ -82,9 +90,12 @@ export default {
       inputAmountText: '',
 
       outputAmount: ethers.constants.Zero,
+      outputLastCalculatedAt: new Date(),
 
       approvedUSDC: ethers.constants.Zero,
       approvedSynthetix: false,
+
+      buttonClicked: false,
     };
   },
 
@@ -96,12 +107,71 @@ export default {
         return ethers.constants.Zero;
       }
     },
+
+    buttonText: function () {
+      if (!this.approvedSynthetix) {
+        return 'Approve Synthetix Exchanges';
+      } else if (this.inputAmount.gt(this.approvedUSDC)) {
+        return 'Approve USDC Spending';
+      } else {
+        return 'Swap';
+      }
+    },
   },
 
   watch: {
-    currentAddress: async function () {
+    currentAddress: function () {
+      this.updateValues();
+    },
+
+    inputAmount: async function () {
+      this.calculateOutputAmount();
+    },
+  },
+
+  mounted: async function () {
+    const provider = await detectEthereumProvider();
+
+    if (provider) {
+      provider.enable();
+
+      provider.on('accountsChanged', function (accounts) {
+        this.currentAddress = ethers.utils.getAddress(accounts[0]);
+      }.bind(this));
+
+      const accounts = await provider.request({ method: 'eth_accounts' });
+
+      this.currentAddress = ethers.utils.getAddress(accounts[0]);
+
+      setInterval(function () {
+        if (new Date() - this.outputLastCalculatedAt > 30000) {
+          this.calculateOutputAmount();
+        }
+      }.bind(this), 30000);
+    } else {
+      alert('Metamask is required to use this site.');
+    }
+  },
+
+  methods: {
+    parseUSDC: function (str) {
+      return ethers.utils.parseUnits(str, 6);
+    },
+
+    formatUSDC: function (bn) {
+      return ethers.utils.formatUnits(bn, 6);
+    },
+
+    formatSTSLA: function (bn) {
+      return ethers.utils.formatUnits(bn, 18);
+    },
+
+    setMaxInput: function () {
+      this.inputAmountText = this.formatUSDC(this.balanceUSDC);
+    },
+
+    updateValues: async function () {
       const provider = new ethers.providers.Web3Provider(global.ethereum);
-      const signer = await provider.getSigner();
 
       const usdc = new ethers.Contract(
         USDC,
@@ -109,7 +179,15 @@ export default {
           'function balanceOf (address) public view returns (uint256)',
           'function allowance (address, address) public view returns (uint256)',
         ],
-        signer
+        provider
+      );
+
+      const stsla = new ethers.Contract(
+        STSLA,
+        [
+          'function balanceOf (address) public view returns (uint256)',
+        ],
+        provider
       );
 
       const delegateApprovals = new ethers.Contract(
@@ -117,7 +195,7 @@ export default {
         [
           'function canExchangeFor (address, address) public view returns (bool)',
         ],
-        signer
+        provider
       );
 
       this.balanceUSDC = await usdc.callStatic.balanceOf(
@@ -129,13 +207,17 @@ export default {
         TSLA_EXCHANGE
       );
 
+      this.balanceSTSLA = await stsla.callStatic.balanceOf(
+        this.currentAddress
+      );
+
       this.approvedSynthetix = await delegateApprovals.callStatic.canExchangeFor(
         this.currentAddress,
         TSLA_EXCHANGE
       );
     },
 
-    inputAmount: async function () {
+    calculateOutputAmount: async function () {
       const provider = new ethers.providers.Web3Provider(global.ethereum);
 
       const swaps = new ethers.Contract(
@@ -166,42 +248,82 @@ export default {
       );
 
       this.outputAmount = susd.mul(ethers.utils.parseEther('1')).div(stslaRate);
-    },
-  },
-
-  mounted: async function () {
-    const provider = await detectEthereumProvider();
-
-    if (provider) {
-      provider.enable();
-
-      provider.on('accountsChanged', function (accounts) {
-        this.currentAddress = ethers.utils.getAddress(accounts[0]);
-      }.bind(this));
-
-      const accounts = await provider.request({ method: 'eth_accounts' });
-
-      this.currentAddress = ethers.utils.getAddress(accounts[0]);
-    } else {
-      alert('Metamask is required to use this site.');
-    }
-  },
-
-  methods: {
-    parseUSDC: function (str) {
-      return ethers.utils.parseUnits(str, 6);
+      this.outputLastCalculatedAt = new Date();
     },
 
-    formatUSDC: function (bn) {
-      return ethers.utils.formatUnits(bn, 6);
-    },
+    clickButton: async function () {
+      if (this.buttonClicked) return;
 
-    formatSTSLA: function (bn) {
-      return ethers.utils.formatUnits(bn, 18);
-    },
+      this.buttonClicked = true;
 
-    setMaxInput: function () {
-      this.inputAmountText = this.formatUSDC(this.balanceUSDC);
+      const provider = new ethers.providers.Web3Provider(global.ethereum);
+      const signer = await provider.getSigner();
+
+      try {
+        if (!this.approvedSynthetix) {
+          const delegateApprovals = new ethers.Contract(
+            DELEGATE_APPROVALS,
+            [
+              'function approveExchangeOnBehalf (address) public',
+            ],
+            signer
+          );
+
+          const tx = await delegateApprovals.approveExchangeOnBehalf(
+            TSLA_EXCHANGE
+          );
+          await tx.wait();
+        } else if (this.inputAmount.gt(this.approvedUSDC)) {
+          const usdc = new ethers.Contract(
+            USDC,
+            [
+              'function approve (address, uint256) public',
+            ],
+            signer
+          );
+
+          const tx = await usdc.approve(
+            TSLA_EXCHANGE,
+            ethers.constants.MaxUint256
+          );
+          await tx.wait();
+        } else {
+          const tslaExchange = new ethers.Contract(
+            TSLA_EXCHANGE,
+            [
+              'function exchange (uint256, uint256) public',
+            ],
+            signer
+          );
+
+          const swaps = new ethers.Contract(
+            SWAPS,
+            [
+              'function get_best_rate (address, address, uint256) returns (address, uint256)',
+            ],
+            provider
+          );
+
+          const [, susd] = await swaps.callStatic.get_best_rate(
+            USDC,
+            SUSD,
+            this.inputAmount
+          );
+
+          // allow 0.5% slippage
+
+          const tx = await tslaExchange.exchange(
+            this.inputAmount,
+            susd.mul(ethers.BigNumber.from(995)).div(ethers.BigNumber.from(1000))
+          );
+          await tx.wait();
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.buttonClicked = false;
+        this.updateValues();
+      }
     },
   },
 };
@@ -374,7 +496,7 @@ export default {
   background: rgba(73,43,244,1);
   opacity: 1;
   position: absolute;
-  top: 447px;
+  top: 550px;
   left: 52px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -383,11 +505,24 @@ export default {
   overflow: hidden;
   cursor: pointer;
 }
-.balance {
+.balance-usdc {
   width: 235px;
   color: rgba(255,255,255,1);
   position: absolute;
   top: 214px;
+  left: 245px;
+  font-family: Roboto;
+  font-weight: Regular;
+  font-size: 14px;
+  opacity: 1;
+  text-align: left;
+  cursor: pointer;
+}
+.balance-stsla {
+  width: 235px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 325px;
   left: 245px;
   font-family: Roboto;
   font-weight: Regular;
@@ -410,16 +545,16 @@ export default {
   pointer-events: none;
 }
 .swap-button-text {
-  width: 62px;
+  width: 446px;
   color: rgba(255,255,255,1);
   position: absolute;
-  top: 460px;
-  left: 244px;
+  top: 563px;
+  left: 52px;
   font-family: Roboto;
   font-weight: Bold;
   font-size: 22px;
   opacity: 1;
-  text-align: left;
+  text-align: center;
   pointer-events: none;
 }
 .usdc-text {
