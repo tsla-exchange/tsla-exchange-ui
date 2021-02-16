@@ -93,7 +93,7 @@
   opacity: 1;
   position: absolute;
   top: 740px;
-  left: 1104px;
+  left: 354px;
   overflow: hidden;
 }
 .shade {

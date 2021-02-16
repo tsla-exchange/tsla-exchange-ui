@@ -53,7 +53,7 @@
   opacity: 1;
   position: absolute;
   top: 0px;
-  left: 162px;
+  left: 157px;
   overflow: hidden;
 }
 .car-red {
@@ -132,7 +132,7 @@
   opacity: 1;
   position: absolute;
   top: 740px;
-  left: 331px;
+  left: 354px;
   overflow: hidden;
 }
 .github-icon {
