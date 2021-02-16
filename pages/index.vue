@@ -21,9 +21,9 @@
     </span>
 
     <div class="car-gray" />
-    <div class="github-icon" />
-    <div class="twitter-icon" />
-    <div class="network-icon" />
+    <a class="github-icon" href="https://github.com/tsla-exchange" target="_blank" />
+    <a class="twitter-icon" href="https://twitter.com/ItsNickBarry" target="_blank" />
+    <a class="network-icon" href="https://kwenta.io/" target="_blank" />
   </div>
 </template>
 
@@ -136,30 +136,33 @@
   overflow: hidden;
 }
 .github-icon {
-  width: 38px;
-  height: 37px;
-  background: rgba(255,255,255,1);
+  width: 35px;
+  height: 35px;
+  background: url("../static/github_1.png");
+  background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 809px;
+  top: 800px;
   left: 70px;
 }
 .twitter-icon {
-  width: 41px;
-  height: 34px;
-  background: rgba(255,255,255,1);
+  width: 35px;
+  height: 35px;
+  background: url("../static/twitter.png");
+  background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 873px;
+  top: 865px;
   left: 70px;
 }
 .network-icon {
-  width: 23px;
-  height: 36px;
-  background: rgba(255,255,255,1);
+  width: 35px;
+  height: 35px;
+  background: url("../static/share.png");
+  background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 934px;
-  left: 77px;
+  top: 930px;
+  left: 70px;
 }
 </style>
