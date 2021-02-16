@@ -488,7 +488,7 @@ html, body, body > div, body > div > div {
 }
 .swap-box-container {
   width: 550px;
-  height: 641px;
+  height: 541px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -500,7 +500,7 @@ html, body, body > div, body > div > div {
 }
 .swap-box {
   width: 550px;
-  height: 583px;
+  height: 483px;
   background: linear-gradient(rgba(130,68,176,1), rgba(255,0,119,1));
   opacity: 1;
   position: absolute;
@@ -560,7 +560,7 @@ html, body, body > div, body > div > div {
   background: rgba(73,43,244,1);
   opacity: 1;
   position: absolute;
-  top: 550px;
+  top: 450px;
   left: 52px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -614,7 +614,7 @@ html, body, body > div, body > div > div {
   width: 446px;
   color: rgba(255,255,255,1);
   position: absolute;
-  top: 563px;
+  top: 463px;
   left: 52px;
   font-family: Montserrat;
   font-weight: bold;
