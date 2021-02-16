@@ -4,8 +4,10 @@
     <div class="car-red" />
     <div class="car-gray" />
 
+
     <div
       class="shade"
+      :style="{ 'z-index': buttonClicked ? '5' : 'initial' }"
       @click="$router.push({ path: '/' })"
     />
 
@@ -13,6 +15,16 @@
     <span class="address-text">{{ currentAddress }}</span>
 
     <div class="swap-box-container">
+      <div
+        class="loader"
+      >
+        <MoonLoader
+          :size="300"
+          color="rgba(73,43,244,1)"
+          :loading="buttonClicked"
+        />
+      </div>
+
       <div class="swap-box" />
       <div class="fox" />
       <span class="swap-box-title">Swap</span>
@@ -65,6 +77,8 @@
 <script>
 import { ethers } from 'ethers';
 
+import { MoonLoader } from '@saeris/vue-spinners';
+
 import detectEthereumProvider from '@metamask/detect-provider';
 
 const TSLA_EXCHANGE = '0x3df4539a20F11D8D737f17290DA726ff4B049aD5';
@@ -79,6 +93,8 @@ const SYSTEM_STATUS = '0x1c86B3CDF2a60Ae3a574f7f71d44E2C50BDdB87E';
 const BPOOL = '0x055dB9AFF4311788264798356bbF3a733AE181c6';
 
 export default {
+  components: { MoonLoader },
+
   data: function () {
     return {
       provider: null,
@@ -729,5 +745,16 @@ html, body, body > div, body > div > div {
   top: 187px;
   left: 68px;
   overflow: hidden;
+}
+
+.loader {
+  position: absolute;
+  overflow: hidden;
+  width: 550px;
+  height: 100%;
+  z-index: 10;
+  left:82px;
+  top:82px;
+  pointer-events: none;
 }
 </style>
