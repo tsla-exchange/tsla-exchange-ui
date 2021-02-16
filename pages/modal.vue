@@ -23,12 +23,20 @@
       <span class="usdc-text">USDC</span>
 
       <input
-        v-model="inputAmount"
+        v-model="inputAmountText"
         class="input-text"
         placeholder="input amount"
+        type="number"
+        min="0"
+        step="0.000001"
       >
 
-      <span class="balance">Balance: {{ balanceUSDC }}</span>
+      <span
+        class="balance"
+        @click="setMaxInput()"
+      >
+        Balance: {{ formatUSDC(balanceUSDC) }}
+      </span>
 
       <div class="v3_159">
         <div class="output-box" />
@@ -36,7 +44,7 @@
         <div class="stsla-icon" />
         <span class="stsla-text">sTSLA</span>
 
-        <span class="output-text">{{ outputAmount }}</span>
+        <span class="output-text">{{ formatSTSLA(outputAmount) }}</span>
       </div>
 
       <div class="swap-button" />
@@ -46,28 +54,118 @@
 </template>
 
 <script>
+import { ethers } from 'ethers';
+
 import detectEthereumProvider from '@metamask/detect-provider';
+
+// TODO: real address
+const TSLA_EXCHANGE = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+
+const UNISWAP_ROUTER = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
+const DELEGATE_APPROVALS = '0x15fd6e554874B9e70F832Ed37f231Ac5E142362f';
+const SWAPS = '0xD1602F68CC7C4c7B59D686243EA35a9C73B0c6a2';
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+const SUSD = '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51';
+const STSLA = '0x918dA91Ccbc32B7a6A0cc4eCd5987bbab6E31e6D';
+const EXCHANGE_RATES = '0xd69b189020EF614796578AfE4d10378c5e7e1138';
 
 export default {
   data: function () {
     return {
+      provider: null,
+
       currentAddress: null,
 
-      balanceUSDC: null,
-      balanceSTSLA: null,
+      balanceUSDC: ethers.constants.Zero,
+      balanceSTSLA: ethers.constants.Zero,
 
-      inputAmount: null,
-      outputAmount: 0,
+      inputAmountText: '',
 
-      approvedUSDC: false,
+      outputAmount: ethers.constants.Zero,
+
+      approvedUSDC: ethers.constants.Zero,
       approvedSynthetix: false,
     };
   },
 
+  computed: {
+    inputAmount: function () {
+      try {
+        return this.parseUSDC(this.inputAmountText || '0');
+      } catch (e) {
+        return ethers.constants.Zero;
+      }
+    },
+  },
+
   watch: {
     currentAddress: async function () {
-      // TODO: check whether approved
+      const provider = new ethers.providers.Web3Provider(global.ethereum);
+      const signer = await provider.getSigner();
 
+      const usdc = new ethers.Contract(
+        USDC,
+        [
+          'function balanceOf (address) public view returns (uint256)',
+          'function allowance (address, address) public view returns (uint256)',
+        ],
+        signer
+      );
+
+      const delegateApprovals = new ethers.Contract(
+        DELEGATE_APPROVALS,
+        [
+          'function canExchangeFor (address, address) public view returns (bool)',
+        ],
+        signer
+      );
+
+      this.balanceUSDC = await usdc.callStatic.balanceOf(
+        this.currentAddress
+      );
+
+      this.approvedUSDC = await usdc.callStatic.allowance(
+        this.currentAddress,
+        TSLA_EXCHANGE
+      );
+
+      this.approvedSynthetix = await delegateApprovals.callStatic.canExchangeFor(
+        this.currentAddress,
+        TSLA_EXCHANGE
+      );
+    },
+
+    inputAmount: async function () {
+      const provider = new ethers.providers.Web3Provider(global.ethereum);
+
+      const swaps = new ethers.Contract(
+        SWAPS,
+        [
+          'function get_best_rate (address, address, uint256) returns (address, uint256)',
+        ],
+        provider
+      );
+
+      const exchanger = new ethers.Contract(
+        EXCHANGE_RATES,
+        [
+          'function rateForCurrency (bytes32) view returns (uint256)',
+          'function getAmountsForExchange (uint256, bytes32, bytes32) view returns (uint256, uint256, uint256)',
+        ],
+        provider
+      );
+
+      const [, susd] = await swaps.callStatic.get_best_rate(
+        USDC,
+        SUSD,
+        this.inputAmount
+      );
+
+      const stslaRate = await exchanger.rateForCurrency(
+        ethers.utils.formatBytes32String('sTSLA')
+      );
+
+      this.outputAmount = susd.mul(ethers.utils.parseEther('1')).div(stslaRate);
     },
   },
 
@@ -76,11 +174,35 @@ export default {
 
     if (provider) {
       provider.enable();
+
+      provider.on('accountsChanged', function (accounts) {
+        this.currentAddress = ethers.utils.getAddress(accounts[0]);
+      }.bind(this));
+
       const accounts = await provider.request({ method: 'eth_accounts' });
-      this.currentAddress = accounts[0];
+
+      this.currentAddress = ethers.utils.getAddress(accounts[0]);
     } else {
       alert('Metamask is required to use this site.');
     }
+  },
+
+  methods: {
+    parseUSDC: function (str) {
+      return ethers.utils.parseUnits(str, 6);
+    },
+
+    formatUSDC: function (bn) {
+      return ethers.utils.formatUnits(bn, 6);
+    },
+
+    formatSTSLA: function (bn) {
+      return ethers.utils.formatUnits(bn, 18);
+    },
+
+    setMaxInput: function () {
+      this.inputAmountText = this.formatUSDC(this.balanceUSDC);
+    },
   },
 };
 </script>
@@ -262,7 +384,7 @@ export default {
   cursor: pointer;
 }
 .balance {
-  width: 130px;
+  width: 235px;
   color: rgba(255,255,255,1);
   position: absolute;
   top: 214px;
@@ -272,6 +394,7 @@ export default {
   font-size: 14px;
   opacity: 1;
   text-align: left;
+  cursor: pointer;
 }
 .swap-box-title {
   width: 68px;
@@ -325,6 +448,9 @@ export default {
   font-size: 22px;
   opacity: 1;
   text-align: left;
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
 }
 .v3_159 {
   width: 446px;
