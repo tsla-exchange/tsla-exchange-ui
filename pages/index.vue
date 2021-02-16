@@ -42,21 +42,21 @@
   overflow: hidden;
 }
 .space {
-  width: 100%;
-  height: 100%;
+  width: 85%;
+  height: 85%;
   background: url("../static/space.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 0px;
-  left: 157px;
+  bottom: 0px;
+  right: 0px;
   overflow: hidden;
 }
 .car-red {
-  width: 318px;
-  height: 155px;
+  width: 200px;
+  height: 100px;
   background: url("../static/car-red.png");
   background-repeat: no-repeat;
   background-position: center center;
@@ -64,7 +64,7 @@
   opacity: 1;
   position: absolute;
   top: 580px;
-  left: 273px;
+  left: 175px;
   transform: rotate(-32deg);
   overflow: hidden;
 }
@@ -124,16 +124,16 @@
   text-align: left;
 }
 .car-gray {
-  width: 523px;
-  height: 297px;
+  width: 400px;
+  height: 225px;
   background: url("../static/car-gray.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 740px;
-  left: 354px;
+  top: 750px;
+  left: 300px;
   overflow: hidden;
 }
 .github-icon {
