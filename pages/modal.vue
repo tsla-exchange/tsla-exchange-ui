@@ -247,7 +247,12 @@ export default {
         ethers.utils.formatBytes32String('sTSLA')
       );
 
-      this.outputAmount = susd.mul(ethers.utils.parseEther('1')).div(stslaRate);
+      this.outputAmount = susd.mul(ethers.utils.parseEther('1')).div(
+        stslaRate
+      ).mul(ethers.BigNumber.from(997)).div(
+        ethers.BigNumber.from(1000)
+      );
+
       this.outputLastCalculatedAt = new Date();
     },
 
