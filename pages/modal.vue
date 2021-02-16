@@ -438,13 +438,13 @@ export default {
   overflow: hidden;
 }
 .address {
-  width: 310px;
+  width: 550px;
   height: 42px;
   background: linear-gradient(rgba(130,68,176,1), rgba(255,0,119,1));
   opacity: 1;
   position: absolute;
   top: 134px;
-  left: 50px;
+  left: 70px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -452,16 +452,16 @@ export default {
   overflow: hidden;
 }
 .address-text {
-  width: 259px;
+  width: 520px;
   color: rgba(255,255,255,1);
   position: absolute;
   top: 143px;
-  left: 65px;
+  left: 85px;
   font-family: Roboto;
   font-weight: Regular;
   font-size: 20px;
   opacity: 1;
-  text-align: left;
+  text-align: center;
   pointer-events: none;
 }
 .swap-box-container {
