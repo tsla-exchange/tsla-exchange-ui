@@ -547,6 +547,9 @@ export default {
   overflow: hidden;
   cursor: pointer;
 }
+.swap-button:hover {
+  background: rgba(63,37,209,1);
+}
 .balance-usdc {
   width: 235px;
   color: rgba(255,255,255,1);

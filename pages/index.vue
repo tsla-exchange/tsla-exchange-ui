@@ -86,7 +86,7 @@
   background: linear-gradient(rgba(130,68,176,1), rgba(255,0,119,1));
   opacity: 1;
   position: absolute;
-  top: 571px;
+  top: 490px;
   left: 70px;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -95,11 +95,14 @@
   overflow: hidden;
   cursor: pointer;
 }
+.button:hover {
+  background: linear-gradient(rgba(107,57,145,1), rgba(209,0,97,1));
+}
 .button-text {
   width: 125px;
   color: rgba(255,255,255,1);
   position: absolute;
-  top: 581px;
+  top: 500px;
   left: 113px;
   font-family: Roboto;
   font-weight: Bold;
@@ -112,7 +115,7 @@
   width: 500px;
   color: rgba(147,159,189,1);
   position: absolute;
-  top: 360px;
+  top: 325px;
   left: 70px;
   font-family: Roboto;
   font-weight: Regular;
