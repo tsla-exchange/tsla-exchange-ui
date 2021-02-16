@@ -3,9 +3,13 @@
     <div class="space" />
     <div class="car-red" />
 
-    <span class="title">Get to the Moon
-      with your sTSLA
+    <span class="title">
+      Drive your sTSLA to the Moon
     </span>
+
+    <p class="paragraph">
+      Exchange your boring USDC for a token that's going places: Synthetic TSLA.  Hurry, your ride is leaving soon!
+    </p>
 
     <div
       class="button"
@@ -13,12 +17,6 @@
     />
 
     <span class="button-text">Get sTSLA</span>
-
-    <span class="paragraph">Synthetix is the backbone for derivatives
-      trading in DeFi, allowing anyone, anywhere
-      to gain on-chain exposure to a vast range
-      of assets.
-    </span>
 
     <div class="car-gray" />
     <a class="github-icon" href="https://github.com/tsla-exchange" target="_blank" />
@@ -102,7 +100,7 @@
   color: rgba(255,255,255,1);
   position: absolute;
   top: 581px;
-  left: 101px;
+  left: 113px;
   font-family: Roboto;
   font-weight: Bold;
   font-size: 20px;
@@ -111,7 +109,7 @@
   pointer-events: none;
 }
 .paragraph {
-  width: 519px;
+  width: 500px;
   color: rgba(147,159,189,1);
   position: absolute;
   top: 360px;
@@ -142,7 +140,7 @@
   background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 800px;
+  top: 750px;
   left: 70px;
 }
 .twitter-icon {
@@ -152,7 +150,7 @@
   background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 865px;
+  top: 815px;
   left: 70px;
 }
 .network-icon {
@@ -162,7 +160,7 @@
   background-size: cover;
   opacity: 1;
   position: absolute;
-  top: 930px;
+  top: 880px;
   left: 70px;
 }
 </style>
