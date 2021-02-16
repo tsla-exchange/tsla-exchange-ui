@@ -64,7 +64,7 @@
   opacity: 1;
   position: absolute;
   top: 580px;
-  left: 278px;
+  left: 273px;
   transform: rotate(-32deg);
   overflow: hidden;
 }
@@ -75,7 +75,7 @@
   top: 134px;
   left: 70px;
   font-family: Roboto Condensed;
-  font-weight: Bold;
+  font-weight: bold;
   font-size: 64px;
   opacity: 1;
   text-align: left;
@@ -104,8 +104,8 @@
   position: absolute;
   top: 500px;
   left: 113px;
-  font-family: Roboto;
-  font-weight: Bold;
+  font-family: Montserrat;
+  font-weight: bold;
   font-size: 20px;
   opacity: 1;
   text-align: left;
@@ -117,8 +117,8 @@
   position: absolute;
   top: 325px;
   left: 70px;
-  font-family: Roboto;
-  font-weight: Regular;
+  font-family: Montserrat;
+  font-weight: normal;
   font-size: 24px;
   opacity: 1;
   text-align: left;

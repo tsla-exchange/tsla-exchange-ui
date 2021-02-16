@@ -458,7 +458,7 @@ export default {
   top: 143px;
   left: 85px;
   font-family: Roboto;
-  font-weight: Regular;
+  font-weight: normal;
   font-size: 20px;
   opacity: 1;
   text-align: center;
@@ -557,7 +557,7 @@ export default {
   top: 214px;
   left: 245px;
   font-family: Roboto;
-  font-weight: Regular;
+  font-weight: normal;
   font-size: 14px;
   opacity: 1;
   text-align: left;
@@ -570,7 +570,7 @@ export default {
   top: 325px;
   left: 245px;
   font-family: Roboto;
-  font-weight: Regular;
+  font-weight: normal;
   font-size: 14px;
   opacity: 1;
   text-align: left;
@@ -583,7 +583,7 @@ export default {
   top: 104px;
   left: 52px;
   font-family: Roboto;
-  font-weight: Bold;
+  font-weight: normal;
   font-size: 24px;
   opacity: 1;
   text-align: left;
@@ -595,8 +595,8 @@ export default {
   position: absolute;
   top: 563px;
   left: 52px;
-  font-family: Roboto;
-  font-weight: Bold;
+  font-family: Montserrat;
+  font-weight: bold;
   font-size: 22px;
   opacity: 1;
   text-align: center;
@@ -609,7 +609,7 @@ export default {
   top: 193px;
   left: 125px;
   font-family: Roboto;
-  font-weight: Bold;
+  font-weight: normal;
   font-size: 22px;
   opacity: 1;
   text-align: left;
@@ -624,7 +624,7 @@ export default {
   top: 187px;
   left: 245px;
   font-family: Roboto;
-  font-weight: Bold;
+  font-weight: normal;
   font-size: 22px;
   opacity: 1;
   text-align: left;
@@ -680,7 +680,7 @@ export default {
   top: 22px;
   left: 73px;
   font-family: Roboto;
-  font-weight: Bold;
+  font-weight: normal;
   font-size: 22px;
   opacity: 1;
   text-align: left;
@@ -693,7 +693,7 @@ export default {
   top: 16px;
   left: 195px;
   font-family: Roboto;
-  font-weight: Bold;
+  font-weight: normal;
   font-size: 22px;
   opacity: 1;
   text-align: left;
