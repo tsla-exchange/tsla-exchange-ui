@@ -68,7 +68,7 @@ import { ethers } from 'ethers';
 import detectEthereumProvider from '@metamask/detect-provider';
 
 // TODO: real address
-const TSLA_EXCHANGE = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const TSLA_EXCHANGE = '0x3Aa5ebB10DC797CAC828524e59A333d0A371443c';
 
 const DELEGATE_APPROVALS = '0x15fd6e554874B9e70F832Ed37f231Ac5E142362f';
 const SWAPS = '0xD1602F68CC7C4c7B59D686243EA35a9C73B0c6a2';
@@ -291,7 +291,7 @@ export default {
           const tslaExchange = new ethers.Contract(
             TSLA_EXCHANGE,
             [
-              'function exchange (uint256, uint256) public',
+              'function exchange (uint256, uint256, uint256) public',
             ],
             signer
           );
@@ -314,7 +314,8 @@ export default {
 
           const tx = await tslaExchange.exchange(
             this.inputAmount,
-            susd.mul(ethers.BigNumber.from(995)).div(ethers.BigNumber.from(1000))
+            susd.mul(ethers.BigNumber.from(995)).div(ethers.BigNumber.from(1000)),
+            ethers.constants.Zero
           );
           await tx.wait();
         }
