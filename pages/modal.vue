@@ -385,6 +385,7 @@ html, body, body > div, body > div > div {
 .container {
   width: 100%;
   height: 100%;
+  min-height: 950px;
   background: linear-gradient(rgba(0,2,75,1), rgba(39,30,110,1));
   opacity: 1;
   position: relative;
@@ -393,8 +394,8 @@ html, body, body > div, body > div > div {
   overflow: hidden;
 }
 .space {
-  width: 85%;
-  height: 85%;
+  width: 100%;
+  height: 100%;
   background: url("../static/space.png");
   background-repeat: no-repeat;
   background-position: center center;
