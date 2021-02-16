@@ -67,8 +67,7 @@ import { ethers } from 'ethers';
 
 import detectEthereumProvider from '@metamask/detect-provider';
 
-// TODO: real address
-const TSLA_EXCHANGE = '0x3Aa5ebB10DC797CAC828524e59A333d0A371443c';
+const TSLA_EXCHANGE = '0x3df4539a20F11D8D737f17290DA726ff4B049aD5';
 
 const DELEGATE_APPROVALS = '0x15fd6e554874B9e70F832Ed37f231Ac5E142362f';
 const SWAPS = '0xD1602F68CC7C4c7B59D686243EA35a9C73B0c6a2';
@@ -261,7 +260,7 @@ export default {
         const balanceSUSD = await bPool.callStatic.getBalance(SUSD);
         const balanceSTSLA = await bPool.callStatic.getBalance(STSLA);
 
-        const output = await bPool.callStatic.calcOutGivenIn(
+        this.outputAmount = await bPool.callStatic.calcOutGivenIn(
           balanceSUSD,
           ethers.utils.parseUnits('0.8', 18),
           balanceSTSLA,
@@ -269,8 +268,6 @@ export default {
           susd,
           ethers.utils.parseUnits('0.001', 18)
         );
-
-        this.outputAmount = output;
       } else {
         const exchangeRates = new ethers.Contract(
           EXCHANGE_RATES,
