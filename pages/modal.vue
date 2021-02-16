@@ -76,6 +76,8 @@ const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const SUSD = '0x57Ab1ec28D129707052df4dF418D58a2D46d5f51';
 const STSLA = '0x918dA91Ccbc32B7a6A0cc4eCd5987bbab6E31e6D';
 const EXCHANGE_RATES = '0xd69b189020EF614796578AfE4d10378c5e7e1138';
+const SYSTEM_STATUS = '0x1c86B3CDF2a60Ae3a574f7f71d44E2C50BDdB87E';
+const BPOOL = '0x055dB9AFF4311788264798356bbF3a733AE181c6';
 
 export default {
   data: function () {
@@ -228,11 +230,10 @@ export default {
         provider
       );
 
-      const exchanger = new ethers.Contract(
-        EXCHANGE_RATES,
+      const systemStatus = new ethers.Contract(
+        SYSTEM_STATUS,
         [
-          'function rateForCurrency (bytes32) view returns (uint256)',
-          'function getAmountsForExchange (uint256, bytes32, bytes32) view returns (uint256, uint256, uint256)',
+          'function synthExchangeSuspension (bytes32) returns (bool, uint248)',
         ],
         provider
       );
@@ -243,15 +244,53 @@ export default {
         this.inputAmount
       );
 
-      const stslaRate = await exchanger.rateForCurrency(
+      const [suspended] = await systemStatus.callStatic.synthExchangeSuspension(
         ethers.utils.formatBytes32String('sTSLA')
       );
 
-      this.outputAmount = susd.mul(ethers.utils.parseEther('1')).div(
-        stslaRate
-      ).mul(ethers.BigNumber.from(997)).div(
-        ethers.BigNumber.from(1000)
-      );
+      if (suspended) {
+        const bPool = new ethers.Contract(
+          BPOOL,
+          [
+            'function getBalance (address) public view returns (uint256)',
+            'function calcOutGivenIn (uint, uint, uint, uint, uint, uint) public pure returns (uint)',
+          ],
+          provider
+        );
+
+        const balanceSUSD = await bPool.callStatic.getBalance(SUSD);
+        const balanceSTSLA = await bPool.callStatic.getBalance(STSLA);
+
+        const output = await bPool.callStatic.calcOutGivenIn(
+          balanceSUSD,
+          ethers.utils.parseUnits('0.8', 18),
+          balanceSTSLA,
+          ethers.utils.parseUnits('0.2', 18),
+          susd,
+          ethers.utils.parseUnits('0.001', 18)
+        );
+
+        this.outputAmount = output;
+      } else {
+        const exchangeRates = new ethers.Contract(
+          EXCHANGE_RATES,
+          [
+            'function rateForCurrency (bytes32) view returns (uint256)',
+          ],
+          provider
+        );
+
+        const stslaRate = await exchangeRates.rateForCurrency(
+          ethers.utils.formatBytes32String('sTSLA')
+        );
+
+        this.outputAmount = susd.mul(ethers.utils.parseEther('1')).div(
+          stslaRate
+        ).mul(ethers.BigNumber.from(997)).div(
+          ethers.BigNumber.from(1000)
+        );
+      }
+
 
       this.outputLastCalculatedAt = new Date();
     },
@@ -320,7 +359,7 @@ export default {
           const tx = await tslaExchange.exchange(
             this.inputAmount,
             susd.mul(ethers.BigNumber.from(995)).div(ethers.BigNumber.from(1000)),
-            ethers.constants.Zero
+            this.outputAmount.mul(ethers.BigNumber.from(995)).div(ethers.BigNumber.from(1000))
           );
           await tx.wait();
         }
