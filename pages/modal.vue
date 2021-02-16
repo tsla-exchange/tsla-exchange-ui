@@ -1,5 +1,4 @@
 <template>
-  <!-- <!DOCTYPE html><html><head><link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" /><link href="./css/main.css" rel="stylesheet" /><title>Document</title></head> -->
   <div class="container">
     <div class="space" />
     <div class="car-red" />
@@ -126,7 +125,7 @@
   position: absolute;
   top: 143px;
   left: 65px;
-  font-family: Montserrat;
+  font-family: Roboto;
   font-weight: Regular;
   font-size: 20px;
   opacity: 1;
@@ -220,7 +219,7 @@
   position: absolute;
   top: 214px;
   left: 280px;
-  font-family: Montserrat;
+  font-family: Roboto;
   font-weight: Regular;
   font-size: 14px;
   opacity: 1;
@@ -232,8 +231,8 @@
   position: absolute;
   top: 104px;
   left: 52px;
-  font-family: Montserrat;
-  font-weight: SemiBold;
+  font-family: Roboto;
+  font-weight: Bold;
   font-size: 24px;
   opacity: 1;
   text-align: left;
@@ -244,20 +243,20 @@
   position: absolute;
   top: 460px;
   left: 244px;
-  font-family: Montserrat;
-  font-weight: SemiBold;
+  font-family: Roboto;
+  font-weight: Bold;
   font-size: 22px;
   opacity: 1;
   text-align: left;
 }
 .usdc-text {
-  width: 66px;
+  width: 72px;
   color: rgba(255,255,255,1);
   position: absolute;
   top: 193px;
   left: 125px;
-  font-family: Montserrat;
-  font-weight: SemiBold;
+  font-family: Roboto;
+  font-weight: Bold;
   font-size: 22px;
   opacity: 1;
   text-align: left;
@@ -268,8 +267,8 @@
   position: absolute;
   top: 187px;
   left: 280px;
-  font-family: Montserrat;
-  font-weight: SemiBold;
+  font-family: Roboto;
+  font-weight: Bold;
   font-size: 22px;
   opacity: 1;
   text-align: left;
@@ -316,13 +315,13 @@
   overflow: hidden;
 }
 .stsla-text {
-  width: 68px;
+  width: 72px;
   color: rgba(255,255,255,1);
   position: absolute;
   top: 22px;
   left: 73px;
-  font-family: Montserrat;
-  font-weight: SemiBold;
+  font-family: Roboto;
+  font-weight: Bold;
   font-size: 22px;
   opacity: 1;
   text-align: left;
@@ -333,8 +332,8 @@
   position: absolute;
   top: 16px;
   left: 228px;
-  font-family: Montserrat;
-  font-weight: SemiBold;
+  font-family: Roboto;
+  font-weight: Bold;
   font-size: 22px;
   opacity: 1;
   text-align: left;

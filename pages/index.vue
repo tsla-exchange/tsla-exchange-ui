@@ -103,8 +103,8 @@
   position: absolute;
   top: 581px;
   left: 101px;
-  font-family: Montserrat;
-  font-weight: SemiBold;
+  font-family: Roboto;
+  font-weight: Bold;
   font-size: 20px;
   opacity: 1;
   text-align: left;
@@ -116,7 +116,7 @@
   position: absolute;
   top: 360px;
   left: 70px;
-  font-family: Montserrat;
+  font-family: Roboto;
   font-weight: Regular;
   font-size: 24px;
   opacity: 1;
