@@ -26,6 +26,11 @@
 </template>
 
 <style>
+/* .__nuxt and .__layout */
+html, body, body > div, body > div > div {
+  height: 100%;
+}
+
 * {
   overflow-x: hidden;
   padding: 0px !important;
@@ -33,7 +38,7 @@
 }
 .container {
   width: 100%;
-  height: 1024px;
+  height: 100%;
   background: linear-gradient(rgba(0,2,75,1), rgba(39,30,110,1));
   opacity: 1;
   position: relative;
