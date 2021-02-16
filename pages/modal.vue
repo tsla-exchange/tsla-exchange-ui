@@ -8,8 +8,9 @@
       class="shade"
       @click="$router.push({ path: '/' })"
     />
+
     <div class="address" />
-    <span class="address-text">0xdeaDDeADDEaDdeadd</span>
+    <span class="address-text">{{ currentAddress }}</span>
 
     <div class="swap-box-container">
       <div class="swap-box" />
@@ -21,8 +22,13 @@
       <div class="usdc-icon" />
       <span class="usdc-text">USDC</span>
 
-      <span class="input-text">1234</span>
-      <span class="balance">Balance: 1234.5678</span>
+      <input
+        v-model="inputAmount"
+        class="input-text"
+        placeholder="input amount"
+      >
+
+      <span class="balance">Balance: {{ balanceUSDC }}</span>
 
       <div class="v3_159">
         <div class="output-box" />
@@ -30,7 +36,7 @@
         <div class="stsla-icon" />
         <span class="stsla-text">sTSLA</span>
 
-        <span class="output-text">0.134567</span>
+        <span class="output-text">{{ outputAmount }}</span>
       </div>
 
       <div class="swap-button" />
@@ -38,6 +44,46 @@
     </div>
   </div>
 </template>
+
+<script>
+import detectEthereumProvider from '@metamask/detect-provider';
+
+export default {
+  data: function () {
+    return {
+      currentAddress: null,
+
+      balanceUSDC: null,
+      balanceSTSLA: null,
+
+      inputAmount: null,
+      outputAmount: 0,
+
+      approvedUSDC: false,
+      approvedSynthetix: false,
+    };
+  },
+
+  watch: {
+    currentAddress: async function () {
+      // TODO: check whether approved
+
+    },
+  },
+
+  mounted: async function () {
+    const provider = await detectEthereumProvider();
+
+    if (provider) {
+      provider.enable();
+      const accounts = await provider.request({ method: 'eth_accounts' });
+      this.currentAddress = accounts[0];
+    } else {
+      alert('Metamask is required to use this site.');
+    }
+  },
+};
+</script>
 
 <style>
 * {
@@ -130,6 +176,7 @@
   font-size: 20px;
   opacity: 1;
   text-align: left;
+  pointer-events: none;
 }
 .swap-box-container {
   width: 550px;
@@ -186,7 +233,7 @@
   overflow: hidden;
 }
 .input-left {
-  width: 207px;
+  width: 175px;
   height: 70px;
   background: rgba(33,34,43,1);
   opacity: 1;
@@ -212,13 +259,14 @@
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   overflow: hidden;
+  cursor: pointer;
 }
 .balance {
   width: 130px;
   color: rgba(255,255,255,1);
   position: absolute;
   top: 214px;
-  left: 280px;
+  left: 245px;
   font-family: Roboto;
   font-weight: Regular;
   font-size: 14px;
@@ -236,6 +284,7 @@
   font-size: 24px;
   opacity: 1;
   text-align: left;
+  pointer-events: none;
 }
 .swap-button-text {
   width: 62px;
@@ -248,6 +297,7 @@
   font-size: 22px;
   opacity: 1;
   text-align: left;
+  pointer-events: none;
 }
 .usdc-text {
   width: 72px;
@@ -260,13 +310,16 @@
   font-size: 22px;
   opacity: 1;
   text-align: left;
+  pointer-events: none;
 }
 .input-text {
-  width: 49px;
+  width: 235px;
   color: rgba(255,255,255,1);
+  border: none;
+  background: none;
   position: absolute;
   top: 187px;
-  left: 280px;
+  left: 245px;
   font-family: Roboto;
   font-weight: Bold;
   font-size: 22px;
@@ -301,7 +354,7 @@
   overflow: hidden;
 }
 .output-left {
-  width: 207px;
+  width: 175px;
   height: 70px;
   background: rgba(33,34,43,1);
   opacity: 1;
@@ -325,18 +378,20 @@
   font-size: 22px;
   opacity: 1;
   text-align: left;
+  pointer-events: none;
 }
 .output-text {
   width: 96px;
   color: rgba(255,255,255,1);
   position: absolute;
   top: 16px;
-  left: 228px;
+  left: 195px;
   font-family: Roboto;
   font-weight: Bold;
   font-size: 22px;
   opacity: 1;
   text-align: left;
+  pointer-events: none;
 }
 .stsla-icon {
   width: 38px;

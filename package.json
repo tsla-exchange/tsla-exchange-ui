@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@metamask/detect-provider": "^1.2.0",
     "eslint": "^7.20.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.6.0",
